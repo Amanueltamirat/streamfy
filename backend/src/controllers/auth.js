@@ -50,7 +50,25 @@ export const  Signup = async (req,res)=>{
 }
 
 export const  Signin = async (req,res)=>{
-    res.send('Signin')
+    const {email, passwod, fullName} = req.body;
+    try {
+         if(!email || !passwod || !fullName) {
+            return res.status(400).json({message: "All fields are required"})
+        }
+        if(passwod.length < 6 ) {
+            return res.status(400).json({message: "Password must be at least 6 characters long"})
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: "Invalid email format" });
+        }
+
+    } catch (error) {
+         console.log('Error in signin controller', error);
+        res.status(500).json({message:"Internal server error"}); 
+    }
 }
 
 export const  Signout = (req,res)=>{
